@@ -41,10 +41,10 @@ class GymClassQuerySet(models.QuerySet):
 
 class GymClassManager(models.Manager):
     def get_queryset(self):
-        return GymClassQuerySet(self.model, using=self._db).trending()
+        return GymClassQuerySet(self.model, using=self._db)
 
     def trending(self):
-        return self.get_queryset()
+        return self.get_queryset().trending()
 
 
 class GymClass(CreatedUpdatedTimeStamp):
