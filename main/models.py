@@ -15,6 +15,10 @@ class Member(CreatedUpdatedTimeStamp):
 
     def __str__(self):
         return self.name
+
+    @property
+    def is_vip(self):
+        return self.balance > 1000
     
 class Trainer(CreatedUpdatedTimeStamp):
     name = models.CharField(max_length=255, null=True, blank=False)
