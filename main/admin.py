@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Member, Trainer, Branch, GymClass, Equipment
+from .models import Member, Trainer, Branch, GymClass, Equipment, DamagedEquipment
 
 # Register your models here.
 
@@ -42,6 +42,12 @@ class GymClassAdmin(admin.ModelAdmin):
 
 @admin.register(Equipment)
 class EquipmentAdmin(admin.ModelAdmin):
+    list_display = ("name", "is_damaged", "created_at", "updated_at")
+    search_fields = ("name",)
+    list_filter = ("name", "is_damaged", "created_at", "updated_at")
+
+@admin.register(DamagedEquipment)
+class DamagedEquipmentAdmin(admin.ModelAdmin):
     list_display = ("name", "is_damaged", "created_at", "updated_at")
     search_fields = ("name",)
     list_filter = ("name", "is_damaged", "created_at", "updated_at")

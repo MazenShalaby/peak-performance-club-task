@@ -49,5 +49,26 @@ class GymClass(CreatedUpdatedTimeStamp):
 class Equipment(CreatedUpdatedTimeStamp):
     name = models.CharField(max_length=255, null=True, blank=False)
     is_damaged = models.BooleanField(default=False, null=True, blank=False)
-    branch = models.ManyToManyField(Branch, related_name="equipment_branch", null=True, blank=False)
+    branch = models.ManyToManyField(Branch, related_name="equipment_branch")
+
+
+class DamagedEquipmentQuerySet(models.QuerySet):
+    def is_damaged(self):
+        return self.filter(is_damaged=True)
+
+
+class DamagedEquipmentManager(models.Manager):
+    def get_queryset(self):
+        return DamagedEquipmentQuerySet(self.model, using=self._db).is_damaged()
+
+    def is_damaged(self):
+        return self.get_queryset()
+
+
+class DamagedEquipment(Equipment):
     
+    objects = DamagedEquipmentManager()
+    class Meta:
+        proxy = True
+        verbose_name = "a damaged equipment"
+        verbose_name_plural = "Damaged Equipments"
