@@ -1,5 +1,8 @@
 from django.db import models
 from django.db.models import Count
+from django.utils import timezone
+from datetime import timedelta
+
 # Create your models here.
 
 
@@ -58,6 +61,13 @@ class GymClass(CreatedUpdatedTimeStamp):
         return self.title
     
     objects = GymClassManager()
+    
+    def apply_discount(self, percentage=20):
+        scheduled_date = self.start_date + timedelta(days=30)
+        # Check if class is scheduled for 30 days 
+        if not (self.start_date <= timezone.now() <= scheduled_date):
+            raise ValueError("class discount durartion has been expired already!")
+        return round(self.base_price * (1 - percentage / 100), 2)
     
 class Equipment(CreatedUpdatedTimeStamp):
     name = models.CharField(max_length=255, null=True, blank=False)
