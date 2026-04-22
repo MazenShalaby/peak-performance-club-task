@@ -40,7 +40,7 @@ class Branch(CreatedUpdatedTimeStamp):
     
 class GymClassQuerySet(models.QuerySet):
     def trending(self):
-        return self.annotate(count=Count("members")).filter(count=15)
+        return self.annotate(count=Count("members")).filter(count__gt=15)
 
 class GymClassManager(models.Manager):
     def get_queryset(self):
@@ -72,7 +72,7 @@ class GymClass(CreatedUpdatedTimeStamp):
 class Equipment(CreatedUpdatedTimeStamp):
     name = models.CharField(max_length=255, null=True, blank=False)
     is_damaged = models.BooleanField(default=False, null=True, blank=False)
-    branch = models.ManyToManyField(Branch, related_name="equipment_branch")
+    branch = models.ForeignKey(Branch, on_delete=models.CASCADE, related_name="equipment_branch")
 
 
 class DamagedEquipmentQuerySet(models.QuerySet):
