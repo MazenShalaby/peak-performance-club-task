@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     
     # local apps
-    "main.apps.MainConfig", 
+    "club.apps.ClubConfig", 
 ]
 
 MIDDLEWARE = [
