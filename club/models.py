@@ -54,7 +54,7 @@ class GymClass(CreatedUpdatedTimeStamp):
     title = models.CharField(max_length=50, null=True, blank=False)
     base_price = models.FloatField(null=True, blank=False)
     start_date = models.DateTimeField(auto_now_add=True, null=True, blank=False)
-    trainer = models.ForeignKey(Trainer, on_delete=models.SET_DEFAULT, default="No trainer added yet for this gym class", related_name="gymclass_trainer")
+    trainer = models.ForeignKey(Trainer, on_delete=models.SET_NULL, null=True, blank=True, related_name="gymclass_trainer")
     members = models.ManyToManyField(Member)
 
     def __str__(self):
