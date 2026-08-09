@@ -13,6 +13,8 @@ class CreatedUpdatedTimeStamp(models.Model):
     class Meta:
         abstract = True  
 
+#################################################################################################################################################
+
 class Member(CreatedUpdatedTimeStamp):
     name = models.CharField(max_length=255, null=True, blank=False)
     balance = models.FloatField(null=True, blank=False)
@@ -23,14 +25,17 @@ class Member(CreatedUpdatedTimeStamp):
     @property
     def is_vip(self):
         return self.balance > 1000
-    
+
+#################################################################################################################################################
+
 class Trainer(CreatedUpdatedTimeStamp):
     name = models.CharField(max_length=255, null=True, blank=False)
     specialization = models.CharField(max_length=50, null=True, blank=False)
 
     def __str__(self):
         return self.name
-    
+
+#################################################################################################################################################
 
 class Branch(CreatedUpdatedTimeStamp):
     name = models.CharField(max_length=50, null=True, blank=False)
@@ -38,7 +43,8 @@ class Branch(CreatedUpdatedTimeStamp):
     
     def __str__(self):
         return self.name
-    
+
+#################################################################################################################################################
 class GymClassQuerySet(models.QuerySet):
     def trending(self):
         return self.annotate(count=Count("members")).filter(count__gt=15)
@@ -49,7 +55,6 @@ class GymClassManager(models.Manager):
 
     def trending(self):
         return self.get_queryset().trending()
-
 
 class GymClass(CreatedUpdatedTimeStamp):
     title = models.CharField(max_length=50, null=True, blank=False)
@@ -79,17 +84,19 @@ class GymClass(CreatedUpdatedTimeStamp):
         if days_until_class > 30:
             return round(self.base_price * (1 - percentage / 100), 2)
         return self.base_price
-    
+
+#################################################################################################################################################
+
 class Equipment(CreatedUpdatedTimeStamp):
     name = models.CharField(max_length=255, null=True, blank=False)
     is_damaged = models.BooleanField(default=False, null=True, blank=False)
     branch = models.ForeignKey(Branch, on_delete=models.CASCADE, related_name="equipment_branch")
 
+#################################################################################################################################################
 
 class DamagedEquipmentQuerySet(models.QuerySet):
     def is_damaged(self):
         return self.filter(is_damaged=True)
-
 
 class DamagedEquipmentManager(models.Manager):
     def get_queryset(self):
@@ -97,7 +104,6 @@ class DamagedEquipmentManager(models.Manager):
 
     def is_damaged(self):
         return self.get_queryset()
-
 
 class DamagedEquipment(Equipment):
     
