@@ -91,6 +91,9 @@ class Equipment(CreatedUpdatedTimeStamp):
     name = models.CharField(max_length=255, null=True, blank=False)
     is_damaged = models.BooleanField(default=False, null=False, blank=False)
     branch = models.ForeignKey(Branch, on_delete=models.CASCADE, related_name="equipment_branch")
+    
+    def __str__(self):
+        return self.name
 
 #################################################################################################################################################
 
