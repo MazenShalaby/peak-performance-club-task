@@ -91,15 +91,48 @@ class Equipment(CreatedUpdatedTimeStamp):
     name = models.CharField(max_length=255, null=True, blank=False)
     is_damaged = models.BooleanField(default=False, null=False, blank=False)
     branch = models.ForeignKey(Branch, on_delete=models.CASCADE, related_name="equipment_branch")
-    
+
     def __str__(self):
         return self.name
 
 #################################################################################################################################################
 
-class DamagedEquipmentManager(models.Manager):
-    def get_queryset(self):
+# [1] override get_queryset() without defining QuerySet class (Best Practice)
+
+class DamagedEquipmentManager(models.Manager): 
+    def get_queryset(self): # we can only use: DamagedEquipment.objects.all()
         return super().get_queryset().filter(is_damaged=True)
+
+
+# [2] Define Custom QuerySet + Custom Manager
+
+# class DamagedEquipmentQuerySet(models.QuerySet):
+    
+#     def is_damaged(self):
+#         return self.filter(is_damaged=True)
+
+# class DamagedEquipmentManager(models.Manager):
+#     def get_queryset(self):
+#         return DamagedEquipmentQuerySet(self.model, using=self._db).is_damaged()
+    
+#     def is_damaged(self): # we can use both: 1) DamagedEquipment.objects.all() & 2) DamagedEquipment.objects.is_damaged()
+#         return self.get_queryset()
+
+
+# [3] Custom QuerySet and settings it as manager
+
+# class DamagedEquipmentQuerySet(models.QuerySet):
+    
+#     def is_damaged(self): # we can only use: DamagedEquipment.objects.is_damaged()
+#         return self.filter(is_damaged=True)
+
+# class DamagedEquipment(Equipment):
+    
+#     objects = DamagedEquipmentQuerySet().as_manager()
+#     class Meta:
+#         proxy = True
+#         verbose_name = "a damaged equipment"
+#         verbose_name_plural = "Damaged Equipments"
 
 
 class DamagedEquipment(Equipment):
