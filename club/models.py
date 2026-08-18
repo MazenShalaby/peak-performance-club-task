@@ -94,16 +94,12 @@ class Equipment(CreatedUpdatedTimeStamp):
 
 #################################################################################################################################################
 
-class DamagedEquipmentQuerySet(models.QuerySet):
-    def is_damaged(self):
-        return self.filter(is_damaged=True)
-
 class DamagedEquipmentManager(models.Manager):
     def get_queryset(self):
-        return DamagedEquipmentQuerySet(self.model, using=self._db).is_damaged()
-
-    def is_damaged(self):
-        return self.get_queryset()
+        return super().get_queryset().filter(is_damaged=True)
+        
+    def back(self):
+        return self.get_queryset().filter(name__icontains="back machine")
 
 class DamagedEquipment(Equipment):
     
