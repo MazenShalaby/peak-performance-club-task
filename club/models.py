@@ -97,9 +97,7 @@ class Equipment(CreatedUpdatedTimeStamp):
 class DamagedEquipmentManager(models.Manager):
     def get_queryset(self):
         return super().get_queryset().filter(is_damaged=True)
-        
-    def back(self):
-        return self.get_queryset().filter(name__icontains="back machine")
+
 
 class DamagedEquipment(Equipment):
     
